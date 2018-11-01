@@ -10,12 +10,12 @@ public class ArithmeticTest {
 		int[] arr ={1,5,8,7,9,6,3,4,2};
 		//new ArithmeticTest().sort(arr);
 		//int[] mergeSort = mergeSort(arr);
-		//System.out.println("褰掑苟鎺掑簭鏈�缁堢粨鏋滐細"+Arrays.toString(mergeSort));
+		//System.out.println("归并排序最终结果："+Arrays.toString(mergeSort));
 		quickSort(arr);
 	}
 	
 	/**
-	 * 蹇�熸帓搴�
+	 * 快速排序
 	 */
 	public static void quickSort(int[] a) {
 		if(a.length>0) {
@@ -23,43 +23,43 @@ public class ArithmeticTest {
 		}
 	}
 	private static void quickSort(int[] a, int low, int high) {
-		//1,鎵惧埌閫掑綊绠楁硶鐨勫嚭鍙�
+		//1,找到递归算法的出口
 		if( low > high) {
 			return;
 		}
-		//2, 瀛�
+		//2, 存
 		int i = low;
 		int j = high;
 		//3,key
 		int key = a[ low ];
-		//4锛屽畬鎴愪竴瓒熸帓搴�
+		//4，完成一趟排序
 		while( i< j) {
-			//4.1 锛屼粠鍙冲線宸︽壘鍒扮涓�涓皬浜巏ey鐨勬暟
+			//4.1 ，从右往左找到第一个小于key的数
 			while(i<j && a[j] > key){
 				j--;
 			}
-			// 4.2 浠庡乏寰�鍙虫壘鍒扮涓�涓ぇ浜巏ey鐨勬暟
+			// 4.2 从左往右找到第一个大于key的数
 			while( i<j && a[i] <= key) {
 				i++;
 			}
-			//4.3 浜ゆ崲
+			//4.3 交换
 			if(i<j) {
 				int p = a[i];
 				a[i] = a[j];
 				a[j] = p;
 			}
 		}
-		// 4.4锛岃皟鏁磌ey鐨勪綅缃�
+		// 4.4，调整key的位置
 		int p = a[i];
 		a[i] = a[low];
 		a[low] = p;
 		System.out.println(Arrays.toString(a));
-		//5, 瀵筴ey宸﹁竟鐨勬暟蹇帓
+		//5, 对key左边的数快排
 		quickSort(a, low, i-1 );
-		//6, 瀵筴ey鍙宠竟鐨勬暟蹇帓
+		//6, 对key右边的数快排
 		quickSort(a, i+1, high);
 	}
-	/* 蹇�熸帓搴忕粨鏉�*/
+	/* 快速排序结束*/
 	
 	
 	private static int[] mergeSort(int[] arr) {
@@ -70,40 +70,40 @@ public class ArithmeticTest {
     private static int[] mergeSort(int[] arr, int[] temp, int left, int right) {
         if (left < right) {
             int center = (left + right) / 2;
-            mergeSort(arr, temp, left, center); // 宸﹁竟
-            mergeSort(arr, temp, center + 1, right); // 鍙宠竟
-            merge(arr, temp, left, center + 1, right); // 鍚堝苟涓や釜鏈夊簭
+            mergeSort(arr, temp, left, center); // 左边
+            mergeSort(arr, temp, center + 1, right); // 右边
+            merge(arr, temp, left, center + 1, right); // 合并两个有序
         }
     	return arr;
         
     }
 
     /**
-     * 灏嗕袱涓湁搴忚〃褰掑苟鎴愪竴涓湁搴忚〃
+     * 将两个有序表归并成一个有序表
      *
      * @param arr
-     * @param temp     涓存椂鏁扮粍
-     * @param leftPos  宸﹁竟寮�濮嬩笅鏍�
-     * @param rightPos 鍙宠竟寮�濮嬩笅鏍�
-     * @param rightEnd 鍙宠竟缁撴潫涓嬫爣
+     * @param temp     临时数组
+     * @param leftPos  左边开始下标
+     * @param rightPos 右边开始下标
+     * @param rightEnd 右边结束下标
      */
     private static int[] merge(int[] arr, int[] temp, int leftPos, int rightPos, int rightEnd) {
-        int leftEnd = rightPos - 1; // 宸﹁竟缁撴潫涓嬫爣
-        int tempPos = leftPos; // 浠庡乏杈瑰紑濮嬬畻
-        int numEle = rightEnd - leftPos + 1; // 鍏冪礌涓暟
+        int leftEnd = rightPos - 1; // 左边结束下标
+        int tempPos = leftPos; // 从左边开始算
+        int numEle = rightEnd - leftPos + 1; // 元素个数
         while (leftPos <= leftEnd && rightPos <= rightEnd) {
             if (arr[leftPos] <= arr[rightPos])
                 temp[tempPos++] = arr[leftPos++];
             else
                 temp[tempPos++] = arr[rightPos++];
         }
-        while (leftPos <= leftEnd) {  // 宸﹁竟濡傛灉鏈夊墿浣�
+        while (leftPos <= leftEnd) {  // 左边如果有剩余
             temp[tempPos++] = arr[leftPos++];
         }
-        while (rightPos <= rightEnd) { // 鍙宠竟濡傛灉鏈夊墿浣�
+        while (rightPos <= rightEnd) { // 右边如果有剩余
             temp[tempPos++] = arr[rightPos++];
         }
-        // 灏唗emp澶嶅埗鍒癮rr
+        // 将temp复制到arr
         for (int i = 0; i < numEle; i++) {
             arr[rightEnd] = temp[rightEnd];
             rightEnd--;
@@ -112,15 +112,15 @@ public class ArithmeticTest {
         return arr;
     }
     
-	//甯屽皵鎺掑簭
+	//希尔排序
 	public void sort(int[] arr) {
         int i, j, r, tmp;
-        // 鍒掔粍鎺掑簭
+        // 划组排序
         for(r = arr.length / 2; r >= 1; r = r / 2) {
             for(i = r; i < arr.length; i++) {
                 tmp = arr[i];
                 j = i - r;
-                // 涓�杞帓搴�
+                // 一轮排序
                 while(j >= 0 && tmp < arr[j]) {
                     arr[j+r] = arr[j];
                     j -= r;
